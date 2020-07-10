@@ -15,11 +15,11 @@ type searchListService struct {
 	dao *list_dao.SearchListDao
 }
 
-func (s *searchListService)GetSearchList() []list_models.SearchList{
+func (s *searchListService) GetSearchList() []list_models.SearchList {
 	return s.dao.GetSearchList()
 }
 
-func NewSearchListService()  SearchListService{
+func NewSearchListService() SearchListService {
 	return &searchListService{
 		dao: list_dao.NewSearchListDao(datasource.GetDb()),
 	}

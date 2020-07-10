@@ -2,8 +2,8 @@ package list_dao
 
 import (
 	"github.com/xormplus/xorm"
-	list_models "pingduoduo_service/models/list"
 	"log"
+	list_models "pingduoduo_service/models/list"
 )
 
 type SearchListDao struct {
@@ -22,7 +22,5 @@ func (dao *SearchListDao) GetSearchList() []list_models.SearchList {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	println("111111")
-	println(datalist)
 	return datalist
 }
