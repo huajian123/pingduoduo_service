@@ -18,12 +18,14 @@ func NewUserDao(engine *xorm.Engine) *UserDao {
 }
 
 func (this *UserDao) Login(param user_model.User) user_model.User {
-	var user user_model.User
-	err := this.engine.Where("name=? and password=?", param.Name, param.Password).Find(&user)
-	fmt.Println("1111")
-	fmt.Println(user)
+	user := user_model.User{
+		Password: param.Password,
+		Name:     param.Name,
+	}
+	has, err := this.engine.Get(&user)
 	if err != nil {
 		log.Fatalln(err)
 	}
+	fmt.Println(has)
 	return user
 }

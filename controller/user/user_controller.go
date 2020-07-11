@@ -1,7 +1,6 @@
 package user_control
 
 import (
-	"fmt"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
 	"pingduoduo_service/models"
@@ -21,7 +20,7 @@ func NewUserController() *UserController {
 }
 
 func (controller *UserController) BeforeActivation(a mvc.BeforeActivation) {
-	a.Handle(iris.MethodPost, "/login", "Login")
+	a.Handle("POST", "/login", "Login")
 }
 
 func (this *UserController) Login() mvc.Result {
@@ -40,8 +39,6 @@ func (this *UserController) Login() mvc.Result {
 			Object: models.NewResult(nil, iris.StatusBadRequest, verificatMsg),
 		}
 	}
-
-	fmt.Println(user)
 
 	response, _ := this.Service.Login(user)
 	return mvc.Response{

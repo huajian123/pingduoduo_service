@@ -8,7 +8,7 @@ import (
 
 func main() {
 	app := newApp()
-	app.Run(iris.Addr(":8080"), iris.WithConfiguration(iris.Configuration{
+	app.Run(iris.Addr(":8081"), iris.WithConfiguration(iris.Configuration{
 		DisableInterruptHandler:           false,
 		DisablePathCorrection:             false,
 		EnablePathEscape:                  false,
