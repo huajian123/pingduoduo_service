@@ -7,19 +7,18 @@ import (
 )
 
 type UserService interface {
-	Login(user_model.User) (user_model.User, error)
+	Login(user_model.User) (user_model.User, bool)
 }
 
 type userService struct {
 	dao *user_dao.UserDao
 }
 
-func (this *userService) Login(param user_model.User) (user_model.User, error) {
+func (this *userService) Login(param user_model.User) (user_model.User, bool) {
 	var user user_model.User
-	user = this.dao.Login(param)
-	return user, nil
-	//var user []user_model.User
-	//user = this.dao.Login(param)
+	var has bool
+	user, has = this.dao.Login(param)
+	return user, has
 
 }
 

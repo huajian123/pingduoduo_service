@@ -17,15 +17,16 @@ func NewUserDao(engine *xorm.Engine) *UserDao {
 	}
 }
 
-func (this *UserDao) Login(param user_model.User) user_model.User {
+func (this *UserDao) Login(param user_model.User) (user_model.User, bool) {
+	fmt.Println(param.Password)
 	user := user_model.User{
-		Password: param.Password,
 		Name:     param.Name,
+		Password: param.Password,
 	}
 	has, err := this.engine.Get(&user)
 	if err != nil {
 		log.Fatalln(err)
 	}
 	fmt.Println(has)
-	return user
+	return user, has
 }

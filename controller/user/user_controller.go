@@ -40,7 +40,15 @@ func (this *UserController) Login() mvc.Result {
 		}
 	}
 
-	response, _ := this.Service.Login(user)
+	var has bool
+
+	response, has := this.Service.Login(user)
+	if !has {
+		return mvc.Response{
+			Object: models.NewResult(nil, iris.StatusBadRequest, "用户名或者密码错误"),
+		}
+	}
+
 	return mvc.Response{
 		Object: models.NewResult(response, 0),
 	}
