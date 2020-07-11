@@ -1,6 +1,7 @@
 package user_control
 
 import (
+	"fmt"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
 	"pingduoduo_service/models"
@@ -20,7 +21,7 @@ func NewUserController() *UserController {
 }
 
 func (controller *UserController) BeforeActivation(a mvc.BeforeActivation) {
-	a.Handle("POST", "/login", "Login")
+	a.Handle(iris.MethodPost, "/login", "Login")
 }
 
 func (this *UserController) Login() mvc.Result {
@@ -32,6 +33,16 @@ func (this *UserController) Login() mvc.Result {
 			Object: models.NewResult(nil, 500),
 		}
 	}
+
+	if len(user.Password) == 0 || user.Password == "" || user.Name == "" || len(user.Name) == 0 {
+		verificatMsg := "用户名或者密码不能为空"
+		return mvc.Response{
+			Object: models.NewResult(nil, iris.StatusBadRequest, verificatMsg),
+		}
+	}
+
+	fmt.Println(user)
+
 	response, _ := this.Service.Login(user)
 	return mvc.Response{
 		Object: models.NewResult(response, 0),
