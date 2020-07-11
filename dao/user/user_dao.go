@@ -27,6 +27,5 @@ func (this *UserDao) Login(param user_model.User) (user_model.User, bool) {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	fmt.Println(has)
 	return user, has
 }
