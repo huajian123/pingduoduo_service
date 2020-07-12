@@ -3,6 +3,7 @@ package commodity_control
 import (
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
+	"pingduoduo_service/models"
 	commodity_service "pingduoduo_service/services/commodity"
 )
 
@@ -20,5 +21,20 @@ func (projectCategoryController *CommodityCategoryController) BeforeActivation(a
 }
 
 func (this *CommodityCategoryController) QueryCommodityCategory() mvc.Result {
-	return nil
+	var searchParam models.SearchParam
+	err := this.Ctx.ReadJSON(&searchParam)
+	if err != nil {
+		this.Ctx.StatusCode(iris.StatusBadRequest)
+		return mvc.Response{
+			Object: models.NewResult(nil, 500),
+		}
+	}
+
+	dataList := this.Service.GetCommodityCategoryList()
+	total := this.Service.GetCommodityCategoryCount()
+	return mvc.Response{
+		Object: models.NewResult(models.PageInfo{
+			List: dataList, PageNum: 1, PageSize: 1, Total: total,
+		}, 0),
+	}
 }

@@ -8,6 +8,7 @@ import (
 
 type CommodityCategoryService interface {
 	GetCommodityCategoryList() []commodity_model.CommodityCategory
+	GetCommodityCategoryCount() int
 }
 
 type commodityCategoryService struct {
@@ -15,7 +16,11 @@ type commodityCategoryService struct {
 }
 
 func (this *commodityCategoryService) GetCommodityCategoryList() []commodity_model.CommodityCategory {
-	return nil
+	return this.dao.GetCommodityCategoryList()
+}
+
+func (this *commodityCategoryService) GetCommodityCategoryCount() int {
+	return this.dao.GetSearchListCount()
 }
 
 func NewCommodityCategoryService() CommodityCategoryService {
