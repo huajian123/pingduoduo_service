@@ -1,10 +1,10 @@
 package commodity_control
 
 import (
-	"fmt"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
 	"pingduoduo_service/models"
+	commodity_model "pingduoduo_service/models/commodity"
 	commodity_service "pingduoduo_service/services/commodity"
 )
 
@@ -19,6 +19,7 @@ func NewCommodityCategoryController() *CommodityCategoryController {
 
 func (projectCategoryController *CommodityCategoryController) BeforeActivation(a mvc.BeforeActivation) {
 	a.Handle("POST", "/queryCommodityCategory", "QueryCommodityCategory")
+	a.Handle("POST", "/addCommodityCategory", "AddCommodityCategory")
 }
 
 func (this *CommodityCategoryController) QueryCommodityCategory() mvc.Result {
@@ -30,14 +31,33 @@ func (this *CommodityCategoryController) QueryCommodityCategory() mvc.Result {
 			Object: models.NewResult(nil, 500),
 		}
 	}
-	fmt.Println(searchParam.PageSize)
-	fmt.Println(searchParam.PageNum)
-
 	dataList := this.Service.GetCommodityCategoryList(searchParam.PageSize, searchParam.PageNum)
 	total := this.Service.GetCommodityCategoryCount()
 	return mvc.Response{
 		Object: models.NewResult(models.PageInfo{
 			List: dataList, PageNum: searchParam.PageNum, PageSize: searchParam.PageSize, Total: total,
 		}, 0),
+	}
+}
+
+func (this *CommodityCategoryController) AddCommodityCategory() mvc.Result {
+	var searchParam commodity_model.CommodityCategory
+	err := this.Ctx.ReadJSON(&searchParam)
+	if err != nil {
+		this.Ctx.StatusCode(iris.StatusBadRequest)
+		return mvc.Response{
+			Object: models.NewResult(nil, 500),
+		}
+	}
+	err2 := this.Service.AddCommodityCategory(searchParam)
+	if err2 != nil {
+		this.Ctx.StatusCode(iris.StatusBadRequest)
+		return mvc.Response{
+			Object: models.NewResult(nil, 500),
+		}
+	}
+
+	return mvc.Response{
+		Object: models.NewResult(nil, 0),
 	}
 }

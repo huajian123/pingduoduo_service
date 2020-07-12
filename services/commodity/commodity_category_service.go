@@ -9,6 +9,7 @@ import (
 type CommodityCategoryService interface {
 	GetCommodityCategoryList(pageSize int, pageNum int) []commodity_model.CommodityCategory
 	GetCommodityCategoryCount() int
+	AddCommodityCategory(category commodity_model.CommodityCategory) error
 }
 
 type commodityCategoryService struct {
@@ -17,6 +18,10 @@ type commodityCategoryService struct {
 
 func (this *commodityCategoryService) GetCommodityCategoryList(pageSize int, pageNum int) []commodity_model.CommodityCategory {
 	return this.dao.GetCommodityCategoryList(pageSize, pageNum)
+}
+
+func (this *commodityCategoryService) AddCommodityCategory(param commodity_model.CommodityCategory) error {
+	return this.dao.AddCommodityCategoryList(param)
 }
 
 func (this *commodityCategoryService) GetCommodityCategoryCount() int {
