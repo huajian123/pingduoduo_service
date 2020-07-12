@@ -1,6 +1,7 @@
 package commodity_control
 
 import (
+	"fmt"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
 	"pingduoduo_service/models"
@@ -29,12 +30,14 @@ func (this *CommodityCategoryController) QueryCommodityCategory() mvc.Result {
 			Object: models.NewResult(nil, 500),
 		}
 	}
+	fmt.Println(searchParam.PageSize)
+	fmt.Println(searchParam.PageNum)
 
-	dataList := this.Service.GetCommodityCategoryList()
+	dataList := this.Service.GetCommodityCategoryList(searchParam.PageSize, searchParam.PageNum)
 	total := this.Service.GetCommodityCategoryCount()
 	return mvc.Response{
 		Object: models.NewResult(models.PageInfo{
-			List: dataList, PageNum: 1, PageSize: 1, Total: total,
+			List: dataList, PageNum: searchParam.PageNum, PageSize: searchParam.PageSize, Total: total,
 		}, 0),
 	}
 }

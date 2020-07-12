@@ -16,9 +16,9 @@ func NewCommodityCategoryDao(engine *xorm.Engine) *CommodityCategoryDao {
 	}
 }
 
-func (this *CommodityCategoryDao) GetCommodityCategoryList() []commodity_model.CommodityCategory {
+func (this *CommodityCategoryDao) GetCommodityCategoryList(pageSize int, pageNum int) []commodity_model.CommodityCategory {
 	var dataList = make([]commodity_model.CommodityCategory, 0)
-	err := this.engine.Find(&dataList)
+	err := this.engine.Limit(pageSize, pageNum-1).Find(&dataList)
 	if err != nil {
 		log.Fatalln(err)
 	}
