@@ -30,17 +30,32 @@ func (this *CommodityCategoryDao) AddCommodityCategoryList(param commodity_model
 
 func (this *CommodityCategoryDao) GetCommodityCategoryList(pageSize int, pageNum int) []commodity_model.CommodityCategory {
 	var dataList = make([]commodity_model.CommodityCategory, 0)
-	fmt.Println(pageSize)
-	fmt.Println(pageNum)
 	if pageNum-1 <= 0 {
 		pageNum = 1
 	}
-
 	err := this.engine.Limit(pageSize*pageNum, (pageNum-1)*pageSize).Find(&dataList)
 	if err != nil {
 		log.Fatalln(err)
 	}
 	return dataList
+}
+
+func (this *CommodityCategoryDao) GetCommodityCategoryDetail(id int) commodity_model.CommodityCategory {
+	data := commodity_model.CommodityCategory{Id: id}
+	_, err := this.engine.Get(&data)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	return data
+}
+
+func (this *CommodityCategoryDao) UpdateCommodityCategory(param commodity_model.CommodityCategory) commodity_model.CommodityCategory {
+	data := commodity_model.CommodityCategory{Name: param.Name}
+	_, err := this.engine.ID(param.Id).Update(data)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	return data
 }
 
 func (this *CommodityCategoryDao) GetSearchListCount() int {
@@ -49,4 +64,14 @@ func (this *CommodityCategoryDao) GetSearchListCount() int {
 		log.Fatalln(err)
 	}
 	return int(count)
+}
+
+func (this *CommodityCategoryDao) DelCommodityCategory(id int) error {
+	obj := new(commodity_model.CommodityCategory)
+
+	_, err := this.engine.ID(id).Delete(obj)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	return err
 }

@@ -20,6 +20,9 @@ func NewCommodityCategoryController() *CommodityCategoryController {
 func (projectCategoryController *CommodityCategoryController) BeforeActivation(a mvc.BeforeActivation) {
 	a.Handle("POST", "/queryCommodityCategory", "QueryCommodityCategory")
 	a.Handle("POST", "/addCommodityCategory", "AddCommodityCategory")
+	a.Handle("POST", "/delCommodityCategory", "DelCommodityCategory")
+	a.Handle("POST", "/getCommodityCategoryDetail", "GetCommodityCategoryDetail")
+	a.Handle("POST", "/updateCommodityCategory", "UpdateCommodityCategory")
 }
 
 func (this *CommodityCategoryController) QueryCommodityCategory() mvc.Result {
@@ -57,6 +60,57 @@ func (this *CommodityCategoryController) AddCommodityCategory() mvc.Result {
 		}
 	}
 
+	return mvc.Response{
+		Object: models.NewResult(nil, 0),
+	}
+}
+
+func (this *CommodityCategoryController) GetCommodityCategoryDetail() mvc.Result {
+	var searchParam commodity_model.CommodityCategory
+	err := this.Ctx.ReadJSON(&searchParam)
+	if err != nil {
+		this.Ctx.StatusCode(iris.StatusBadRequest)
+		return mvc.Response{
+			Object: models.NewResult(nil, 500),
+		}
+	}
+	data := this.Service.GetCommodityCategoryDetail(searchParam.Id)
+	return mvc.Response{
+		Object: models.NewResult(data, 0),
+	}
+}
+
+func (this *CommodityCategoryController) UpdateCommodityCategory() mvc.Result {
+	var searchParam commodity_model.CommodityCategory
+	err := this.Ctx.ReadJSON(&searchParam)
+	if err != nil {
+		this.Ctx.StatusCode(iris.StatusBadRequest)
+		return mvc.Response{
+			Object: models.NewResult(nil, 500),
+		}
+	}
+	data := this.Service.UpdateCommodityCategory(searchParam)
+	return mvc.Response{
+		Object: models.NewResult(data, 0),
+	}
+}
+
+func (this *CommodityCategoryController) DelCommodityCategory() mvc.Result {
+	var delParam commodity_model.CommodityCategory
+	err := this.Ctx.ReadJSON(&delParam)
+	if err != nil {
+		this.Ctx.StatusCode(iris.StatusBadRequest)
+		return mvc.Response{
+			Object: models.NewResult(nil, 500),
+		}
+	}
+	err2 := this.Service.DelCommodityCategory(delParam.Id)
+	if err2 != nil {
+		this.Ctx.StatusCode(iris.StatusBadRequest)
+		return mvc.Response{
+			Object: models.NewResult(nil, 500),
+		}
+	}
 	return mvc.Response{
 		Object: models.NewResult(nil, 0),
 	}

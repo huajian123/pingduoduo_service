@@ -10,6 +10,9 @@ type CommodityCategoryService interface {
 	GetCommodityCategoryList(pageSize int, pageNum int) []commodity_model.CommodityCategory
 	GetCommodityCategoryCount() int
 	AddCommodityCategory(category commodity_model.CommodityCategory) error
+	DelCommodityCategory(id int) error
+	UpdateCommodityCategory(commodity_model.CommodityCategory) commodity_model.CommodityCategory
+	GetCommodityCategoryDetail(id int) commodity_model.CommodityCategory
 }
 
 type commodityCategoryService struct {
@@ -26,6 +29,18 @@ func (this *commodityCategoryService) AddCommodityCategory(param commodity_model
 
 func (this *commodityCategoryService) GetCommodityCategoryCount() int {
 	return this.dao.GetSearchListCount()
+}
+
+func (this *commodityCategoryService) DelCommodityCategory(id int) error {
+	return this.dao.DelCommodityCategory(id)
+}
+
+func (this *commodityCategoryService) GetCommodityCategoryDetail(id int) commodity_model.CommodityCategory {
+	return this.dao.GetCommodityCategoryDetail(id)
+}
+
+func (this *commodityCategoryService) UpdateCommodityCategory(param commodity_model.CommodityCategory) commodity_model.CommodityCategory {
+	return this.dao.UpdateCommodityCategory(param)
 }
 
 func NewCommodityCategoryService() CommodityCategoryService {
