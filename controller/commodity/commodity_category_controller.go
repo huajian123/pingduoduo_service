@@ -34,8 +34,8 @@ func (this *CommodityCategoryController) QueryCommodityCategory() mvc.Result {
 			Object: models.NewResult(nil, 500),
 		}
 	}
-	dataList := this.Service.GetCommodityCategoryList(searchParam.PageSize, searchParam.PageNum)
-	total := this.Service.GetCommodityCategoryCount()
+	dataList := this.Service.GetCommodityCategoryList(searchParam.PageSize, searchParam.PageNum, searchParam.Filters.(map[string]interface{}))
+	total := this.Service.GetCommodityCategoryCount(searchParam.Filters.(map[string]interface{}))
 	return mvc.Response{
 		Object: models.NewResult(models.PageInfo{
 			List: dataList, PageNum: searchParam.PageNum, PageSize: searchParam.PageSize, Total: total,

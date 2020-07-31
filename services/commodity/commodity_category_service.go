@@ -7,8 +7,8 @@ import (
 )
 
 type CommodityCategoryService interface {
-	GetCommodityCategoryList(pageSize int, pageNum int) []commodity_model.CommodityCategory
-	GetCommodityCategoryCount() int
+	GetCommodityCategoryList(pageSize int, pageNum int, searchParam map[string]interface{}) []commodity_model.CommodityCategory
+	GetCommodityCategoryCount(searchParam map[string]interface{}) int
 	AddCommodityCategory(category commodity_model.CommodityCategory) error
 	DelCommodityCategory(id int) error
 	UpdateCommodityCategory(commodity_model.CommodityCategory) commodity_model.CommodityCategory
@@ -19,16 +19,17 @@ type commodityCategoryService struct {
 	dao *commodity_dao.CommodityCategoryDao
 }
 
-func (this *commodityCategoryService) GetCommodityCategoryList(pageSize int, pageNum int) []commodity_model.CommodityCategory {
-	return this.dao.GetCommodityCategoryList(pageSize, pageNum)
+func (this *commodityCategoryService) GetCommodityCategoryList(pageSize int, pageNum int, searchParam map[string]interface{}) []commodity_model.CommodityCategory {
+
+	return this.dao.GetCommodityCategoryList(pageSize, pageNum, searchParam)
 }
 
 func (this *commodityCategoryService) AddCommodityCategory(param commodity_model.CommodityCategory) error {
 	return this.dao.AddCommodityCategoryList(param)
 }
 
-func (this *commodityCategoryService) GetCommodityCategoryCount() int {
-	return this.dao.GetSearchListCount()
+func (this *commodityCategoryService) GetCommodityCategoryCount(searchParam map[string]interface{}) int {
+	return this.dao.GetSearchListCount(searchParam)
 }
 
 func (this *commodityCategoryService) DelCommodityCategory(id int) error {

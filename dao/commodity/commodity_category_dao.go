@@ -28,12 +28,18 @@ func (this *CommodityCategoryDao) AddCommodityCategoryList(param commodity_model
 	return err
 }
 
-func (this *CommodityCategoryDao) GetCommodityCategoryList(pageSize int, pageNum int) []commodity_model.CommodityCategory {
+func (this *CommodityCategoryDao) GetCommodityCategoryList(pageSize int, pageNum int, searchParam map[string]interface{}) []commodity_model.CommodityCategory {
 	var dataList = make([]commodity_model.CommodityCategory, 0)
 	if pageNum-1 <= 0 {
 		pageNum = 1
 	}
-	err := this.engine.Limit(pageSize*pageNum, (pageNum-1)*pageSize).Find(&dataList)
+	session := this.engine.Where("1=1")
+	if searchParam["name"] != "" {
+		session = session.And("name = ?", searchParam["name"])
+	}
+
+	err := session.Limit(pageSize*pageNum, (pageNum-1)*pageSize).Find(&dataList)
+
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -58,8 +64,12 @@ func (this *CommodityCategoryDao) UpdateCommodityCategory(param commodity_model.
 	return data
 }
 
-func (this *CommodityCategoryDao) GetSearchListCount() int {
-	count, err := this.engine.Count(new(commodity_model.CommodityCategory))
+func (this *CommodityCategoryDao) GetSearchListCount(searchParam map[string]interface{}) int {
+	session := this.engine.Where("1=1")
+	if searchParam["name"] != "" {
+		session = session.And("name = ?", searchParam["name"])
+	}
+	count, err := session.Count(new(commodity_model.CommodityCategory))
 	if err != nil {
 		log.Fatalln(err)
 	}
