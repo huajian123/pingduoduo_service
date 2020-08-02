@@ -76,6 +76,15 @@ func (this *CommodityCategoryDao) GetSearchListCount(searchParam map[string]inte
 	return int(count)
 }
 
+func (this *CommodityCategoryDao) BatchDelCommdityCategory(ids []int) error {
+	obj := new(commodity_model.CommodityCategory)
+	_, err := this.engine.In("id", ids).Delete(obj)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	return err
+}
+
 func (this *CommodityCategoryDao) DelCommodityCategory(id int) error {
 	obj := new(commodity_model.CommodityCategory)
 

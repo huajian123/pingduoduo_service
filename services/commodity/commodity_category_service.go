@@ -11,6 +11,7 @@ type CommodityCategoryService interface {
 	GetCommodityCategoryCount(searchParam map[string]interface{}) int
 	AddCommodityCategory(category commodity_model.CommodityCategory) error
 	DelCommodityCategory(id int) error
+	BatchDelCommdityCategory(ids []int) error
 	UpdateCommodityCategory(commodity_model.CommodityCategory) commodity_model.CommodityCategory
 	GetCommodityCategoryDetail(id int) commodity_model.CommodityCategory
 }
@@ -34,6 +35,10 @@ func (this *commodityCategoryService) GetCommodityCategoryCount(searchParam map[
 
 func (this *commodityCategoryService) DelCommodityCategory(id int) error {
 	return this.dao.DelCommodityCategory(id)
+}
+
+func (this *commodityCategoryService) BatchDelCommdityCategory(ids []int) error {
+	return this.dao.BatchDelCommdityCategory(ids)
 }
 
 func (this *commodityCategoryService) GetCommodityCategoryDetail(id int) commodity_model.CommodityCategory {

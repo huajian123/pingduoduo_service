@@ -1,6 +1,7 @@
 package commodity_control
 
 import (
+	"fmt"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
 	"pingduoduo_service/models"
@@ -21,6 +22,7 @@ func (projectCategoryController *CommodityCategoryController) BeforeActivation(a
 	a.Handle("POST", "/queryCommodityCategory", "QueryCommodityCategory")
 	a.Handle("POST", "/addCommodityCategory", "AddCommodityCategory")
 	a.Handle("POST", "/delCommodityCategory", "DelCommodityCategory")
+	a.Handle("POST", "/batchDelCommdityCategory", "BatchDelCommdityCategory")
 	a.Handle("POST", "/getCommodityCategoryDetail", "GetCommodityCategoryDetail")
 	a.Handle("POST", "/updateCommodityCategory", "UpdateCommodityCategory")
 }
@@ -105,6 +107,28 @@ func (this *CommodityCategoryController) DelCommodityCategory() mvc.Result {
 		}
 	}
 	err2 := this.Service.DelCommodityCategory(delParam.Id)
+	if err2 != nil {
+		this.Ctx.StatusCode(iris.StatusBadRequest)
+		return mvc.Response{
+			Object: models.NewResult(nil, 500),
+		}
+	}
+	return mvc.Response{
+		Object: models.NewResult(nil, 0),
+	}
+}
+
+func (this *CommodityCategoryController) BatchDelCommdityCategory() mvc.Result {
+	var delParam map[string][]int
+	err := this.Ctx.ReadJSON(&delParam)
+	if err != nil {
+		this.Ctx.StatusCode(iris.StatusBadRequest)
+		return mvc.Response{
+			Object: models.NewResult(nil, 500),
+		}
+	}
+	err2 := this.Service.BatchDelCommdityCategory(delParam["idArray"])
+	fmt.Println(delParam)
 	if err2 != nil {
 		this.Ctx.StatusCode(iris.StatusBadRequest)
 		return mvc.Response{
