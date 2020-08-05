@@ -28,7 +28,7 @@ func (projectCategoryController *CommodityCategoryController) BeforeActivation(a
 }
 
 func (this *CommodityCategoryController) QueryCommodityCategory() mvc.Result {
-	var searchParam models.SearchParam
+	var searchParam map[string]interface{}
 	err := this.Ctx.ReadJSON(&searchParam)
 	if err != nil {
 		this.Ctx.StatusCode(iris.StatusBadRequest)
@@ -36,12 +36,9 @@ func (this *CommodityCategoryController) QueryCommodityCategory() mvc.Result {
 			Object: models.NewResult(nil, 500),
 		}
 	}
-	dataList := this.Service.GetCommodityCategoryList(searchParam.PageSize, searchParam.PageNum, searchParam.Filters.(map[string]interface{}))
-	total := this.Service.GetCommodityCategoryCount(searchParam.Filters.(map[string]interface{}))
+	dataList := this.Service.GetCommodityCategoryList(searchParam)
 	return mvc.Response{
-		Object: models.NewResult(models.PageInfo{
-			List: dataList, PageNum: searchParam.PageNum, PageSize: searchParam.PageSize, Total: total,
-		}, 0),
+		Object: models.NewResult(dataList, 0),
 	}
 }
 

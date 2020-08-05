@@ -7,7 +7,7 @@ import (
 )
 
 type CommodityCategoryService interface {
-	GetCommodityCategoryList(pageSize int, pageNum int, searchParam map[string]interface{}) []commodity_model.CommodityCategory
+	GetCommodityCategoryList(searchParam map[string]interface{}) []commodity_model.CommodityCategory
 	GetCommodityCategoryCount(searchParam map[string]interface{}) int
 	AddCommodityCategory(category commodity_model.CommodityCategory) error
 	DelCommodityCategory(id int) error
@@ -20,9 +20,9 @@ type commodityCategoryService struct {
 	dao *commodity_dao.CommodityCategoryDao
 }
 
-func (this *commodityCategoryService) GetCommodityCategoryList(pageSize int, pageNum int, searchParam map[string]interface{}) []commodity_model.CommodityCategory {
+func (this *commodityCategoryService) GetCommodityCategoryList(searchParam map[string]interface{}) []commodity_model.CommodityCategory {
 
-	return this.dao.GetCommodityCategoryList(pageSize, pageNum, searchParam)
+	return this.dao.GetCommodityCategoryList(searchParam)
 }
 
 func (this *commodityCategoryService) AddCommodityCategory(param commodity_model.CommodityCategory) error {

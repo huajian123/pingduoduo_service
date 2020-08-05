@@ -28,17 +28,15 @@ func (this *CommodityCategoryDao) AddCommodityCategoryList(param commodity_model
 	return err
 }
 
-func (this *CommodityCategoryDao) GetCommodityCategoryList(pageSize int, pageNum int, searchParam map[string]interface{}) []commodity_model.CommodityCategory {
+func (this *CommodityCategoryDao) GetCommodityCategoryList(searchParam map[string]interface{}) []commodity_model.CommodityCategory {
 	var dataList = make([]commodity_model.CommodityCategory, 0)
-	if pageNum-1 <= 0 {
-		pageNum = 1
-	}
 	session := this.engine.Where("1=1")
 	if searchParam["name"] != "" {
 		session = session.And("name = ?", searchParam["name"])
 	}
+	session.And("pid = ?", searchParam["pid"])
 
-	err := session.Limit(pageSize*pageNum, (pageNum-1)*pageSize).Find(&dataList)
+	err := session.Find(&dataList)
 
 	if err != nil {
 		log.Fatalln(err)
