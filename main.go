@@ -25,7 +25,9 @@ func newApp() *iris.Application {
 	app := iris.New()
 	//可以强制应用程序优化以获得尽可能最佳的性能
 	app.Configure(iris.WithOptimizations)
-	routes.App(app)     //初始化路由
+	routes.App(app) //初始化路由
+	//注册静态资源
+	app.HandleDir("/static", "./static")
 	datasource.InitDb() // 初始化数据库
 	return app
 }
